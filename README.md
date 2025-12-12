@@ -389,18 +389,6 @@ Este enfoque permite analizar si una arquitectura neuronal sencilla es capaz de 
 
 Ambos modelos se evalúan sobre el conjunto de test utilizando las mismas métricas que en el resto del proyecto:
 
-- Métricas de error:
-
-| Época | Train Loss | Val Loss |
-|------:|-----------:|---------:|
-| 10 | 0.6242 | 0.6176 |
-| 20 | 0.5447 | 0.5397 |
-| 30 | 0.4604 | 0.5024 |
-| 40 | 0.4304 | 0.4827 |
-| 50 | 0.3845 | 0.4700 |
-
-*Early Stopping:* activado en época *55*
-
 Además, se generan automáticamente:
 
 - Matrices de confusión
@@ -422,6 +410,17 @@ Además, se generan automáticamente:
   <img src="images/roc_BERT_Emb_PyTorch_E_S.png" width="300" />
 </p>
 
+- Métricas de error:
+
+| Época | Train Loss | Val Loss |
+|------:|-----------:|---------:|
+| 10 | 0.6242 | 0.6176 |
+| 20 | 0.5447 | 0.5397 |
+| 30 | 0.4604 | 0.5024 |
+| 40 | 0.4304 | 0.4827 |
+| 50 | 0.3845 | 0.4700 |
+
+*Early Stopping:* activado en época *55*
 
 ##    8. Comparación final de modelos
 
