@@ -119,7 +119,8 @@ El vectorizador se ajusta exclusivamente sobre el conjunto de entrenamiento y po
 ### 5.2 Modelos evaluados con TF-IDF
 Sobre la representación TF-IDF se evalúan dos enfoques de clasificación distintos:
 
-A. Regresión Logística (Scikit-learn)
+***A. Regresión Logística (Scikit-learn)***
+
 Se utiliza un modelo de Regresión Logística como clasificador lineal de referencia, con la siguiente configuración:
 
 - Número máximo de iteraciones: 1000
@@ -130,7 +131,7 @@ El modelo produce probabilidades asociadas a la clase positiva (hiperpartidista)
 
 Este enfoque constituye el baseline clásico del proyecto.
 
-B. Red neuronal feed-forward (PyTorch)
+***B. Red neuronal feed-forward (PyTorch)***
 
 Como alternativa al clasificador lineal, se entrena una red neuronal feed-forward implementada en PyTorch, utilizando los vectores TF-IDF como entrada.
 
@@ -169,6 +170,17 @@ Los resultados obtenidos se almacenan para su comparación directa con las fases
 #### 5.3.1 Resultados TF-IDF + Regresión Logística (Scikit-learn)
 
 ![Matriz de confusión con TF-IDF Scikit-learn](images/conf_matrix_TFIDF_Sklearn.png)
+![Curvas roc](images/roc_TFIDF_Sklearn.png)
+<div style="display: flex; gap: 20px; justify-content: center;">
+  <div style="text-align: center;">
+    <img src="images/conf_matrix_TFIDF_Sklearn.png" width="400">
+    <p><strong>TF-IDF + Regresión Logística</strong></p>
+  </div>
+  <div style="text-align: center;">
+    <img src="images/conf_matrix_TFIDF_PyTorch.png" width="400">
+    <p><strong>TF-IDF + PyTorch</strong></p>
+  </div>
+</div>
 ![Matriz de confusión con TF-IDF PyTorch](images/conf_matrix_TFIDF_PyTorch.png)
 
 #### 5.3.2 Resultados TF-IDF + Red neuronal (PyTorch)
