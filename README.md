@@ -43,23 +43,13 @@ README.md                        # Memoria del proyecto
 
 Para garantizar la correcta ejecución del proyecto, se recomienda crear un entorno virtual e instalar las dependencias necesarias.
 
-### Creación del entorno virtual
-
-```bash
-python -m venv env
-Activación del entorno
-Windows:
-
-bash
-env\Scripts\activate
-Linux / macOS:
-
-bash
-
-source env/bin/activate
-Instalación de dependencias
-bash
-pip install -r requirements.txt
+- Creación del entorno virtual
+    - python -m venv env
+- Activación del entorno
+    - Windows: env\Scripts\activate
+    - Linux / macOS: source env/bin/activate
+- Instalación de dependencias
+    - pip install -r requirements.txt
 
 Las bibliotecas empleadas incluyen, entre otras:
 
