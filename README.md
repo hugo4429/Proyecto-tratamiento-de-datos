@@ -181,9 +181,12 @@ Los resultados obtenidos se almacenan para su comparación directa con las fases
 
 
 #### 5.3.2 Resultados TF-IDF + Red neuronal (PyTorch)
-
-![Matriz de confusión con TF-IDF PyTorch](images/conf_matrix_TFIDF_PyTorch.png)
-![alt text](roc_TFIDF_Sklearn-1.png)
+<p align="center">
+  <img src="images/conf_matrix_TFIDF_PyTorch.png" width="300" />
+  <img src="images/roc_TFIDF_PyTorch.png" width="300" />
+</p>
+<!--![Matriz de confusión con TF-IDF PyTorch](images/conf_matrix_TFIDF_PyTorch.png)
+![alt text](images/roc_TFIDF_PyTorch.png)-->
 
 Además, con el objetivo de mejorar la capacidad de generalización del modelo neuronal y evitar el sobreajuste, se ha incorporado la técnica de early stopping durante el entrenamiento de la red neuronal implementada en PyTorch.
 
