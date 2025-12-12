@@ -31,7 +31,7 @@ El dataset empleado es Hyperpartisan News Detection, disponible en Hugging Face,
 main.py                           Fase 1: Preprocesado, limpieza y EDA
 fase2_tfidf.py                    Fase 2: TF-IDF + Regresión Logística
 fase3_pytorch.py                  Fase 3: Red neuronal con embeddings propios
-fase4_bert.py                     Fase 4: Fine-tuning de DistilBERT
+Modelo pesado                     Fase 2: Bert
 dataset_procesado_final.csv       Dataset final limpio
 grafico_longitud.png              Histograma de longitudes
 grafico_entrenamiento_pytorch.png
@@ -96,33 +96,87 @@ En esta fase se lleva a cabo la construcción del dataset final utilizado en las
     - grafico_longitud.png – distribución de longitudes de los textos tras el preprocesado.
 
 
-##    5. Fase 2 – Representación TF-IDF + Regresión Logística (fase2_tfidf.py)
+##  5. Fase 2 – Representación TF-IDF + Regresión Logística (fase2_tfidf.py)
 
-En esta fase se construye un modelo clásico de machine learning basado en representaciones TF-IDF y una Regresión Logística, que actúa como baseline para comparar con modelos neuronales y transformadores.
+En esta fase se utiliza TF-IDF (Term Frequency – Inverse Document Frequency) como primera estrategia de representación vectorial del texto. Este enfoque transforma cada noticia en un vector numérico de dimensión fija, donde cada componente refleja la importancia de un término en función de su frecuencia local y su capacidad discriminativa en el corpus completo.
 
-- Objetivos
-    - Generar una representación vectorial TF-IDF del campo input_text del dataset procesado.
-    - Entrenar un modelo supervisado de Regresión Logística utilizando los vectores TF-IDF.
-    - Evaluar el rendimiento del modelo mediante métricas estándar de clasificación.
-    - Almacenar el vectorizador para reutilización posterior sin necesidad de reentrenarlo.
-    - Detalles técnicos implementados
-    - Carga de dataset_procesado_final.csv y eliminación preventiva de posibles valores nulos.
-    - División estratificada en train (80%) y test (20%) para mantener la proporción de clases.
-    - Uso de TfidfVectorizer con max_features=5000 y stop_words='english' para controlar dimensionalidad y ruido.
-    - Ajuste del vectorizador únicamente sobre el conjunto de entrenamiento para evitar data leakage.
-    - Entrenamiento de una Regresión Logística (max_iter=1000) adecuada para texto vectorizado.
-    - Evaluación mediante:
-        - Accuracy
-        - Classification report (precision, recall, f1-score)
-    - Guardado del vectorizador TF-IDF como tfidf_vectorizer.pkl.
+TF-IDF se emplea como baseline para comparar posteriormente su rendimiento frente a representaciones neuronales y embeddings contextuales.
 
+### 5.1 Configuración de la vectorización TF-IDF
 
-- Resultados obtenidos
-    - Accuracy del modelo sobre el conjunto de test.
-    - Informe de clasificación completo, mostrando desempeño por clase (Neutro y Hiperpartidista).
-    - Vectorizador guardado:
-    - tfidf_vectorizer.pkl, útil para futuras predicciones o comparación con otros modelos.
-- Este modelo constituye el baseline clásico del proyecto, sirviendo como referencia frente a métodos neuronales (PyTorch) y modelos Transformer (BERT).
+La vectorización del texto se realiza con los siguientes parámetros:
+
+- Número máximo de características (max_features): 3000
+  Se limita el vocabulario a los 3000 términos más relevantes para reducir dimensionalidad y ruido.
+- Eliminación de stopwords: inglés
+  Se eliminan palabras funcionales sin carga semántica relevante.
+
+- Frecuencia mínima de documento (min_df): 10
+  Se descartan términos que aparecen en menos de 10 documentos, evitando términos demasiado raros.
+
+El vectorizador se ajusta exclusivamente sobre el conjunto de entrenamiento y posteriormente se aplica al conjunto de validación y test, evitando filtrado de información entre conjuntos (data leakage).
+
+### 5.2 Modelos evaluados con TF-IDF
+Sobre la representación TF-IDF se evalúan dos enfoques de clasificación distintos:
+
+A. Regresión Logística (Scikit-learn)
+Se utiliza un modelo de Regresión Logística como clasificador lineal de referencia, con la siguiente configuración:
+
+- Número máximo de iteraciones: 1000
+- Ajuste de pesos de clase: balanceado
+- Semilla aleatoria: 42
+
+El modelo produce probabilidades asociadas a la clase positiva (hiperpartidista), lo que permite una evaluación más rica que una predicción binaria directa.
+
+Este enfoque constituye el baseline clásico del proyecto.
+
+B. Red neuronal feed-forward (PyTorch)
+
+Como alternativa al clasificador lineal, se entrena una red neuronal feed-forward implementada en PyTorch, utilizando los vectores TF-IDF como entrada.
+
+Características principales del modelo:
+
+- Dimensión de entrada: 3000 (correspondiente a TF-IDF)
+
+- Arquitectura:
+
+    - Capa densa de 128 neuronas
+    - Capa densa de 64 neuronas
+    - Capa de salida con activación sigmoide
+
+- Función de pérdida: Binary Cross-Entropy
+- Optimizador: Adam
+- Número de épocas: 15
+- Dropout: 0.3 para reducir overfitting
+
+Este modelo permite analizar si una arquitectura no lineal es capaz de extraer patrones adicionales a partir de una representación TF-IDF clásica.
+
+### 5.3 Evaluación y métricas
+Ambos modelos se evalúan sobre el conjunto de test utilizando exactamente las mismas métricas:
+
+- **Accuracy**, como medida global de rendimiento.
+
+- **ROC-AUC**, para evaluar la capacidad discriminativa del modelo de forma independiente del umbral de decisión.
+
+Además, para cada modelo se generan y almacenan las siguientes visualizaciones:
+
+- **Matriz de confusión** (Neutro vs. Hiperpartidista).
+
+- **Curva ROC** con el valor del área bajo la curva (AUC).
+
+Los resultados obtenidos se almacenan para su comparación directa con las fases posteriores del proyecto, donde se emplean representaciones neuronales y modelos Transformer.
+
+#### 5.3.1 Resultados TF-IDF + Regresión Logística (Scikit-learn)
+
+![Matriz de confusión con TF-IDF Scikit-learn](images/conf_matrix_TFIDF_Sklearn.png)
+![Matriz de confusión con TF-IDF PyTorch](images/conf_matrix_TFIDF_PyTorch.png)
+
+#### 5.3.2 Resultados TF-IDF + Red neuronal (PyTorch)
+#### 5.3.3 Comparación entre ambos enfoques
+
+gráficas
+curvas rock
+matriz de confusión
 
 ##    6. Fase 3 – Embeddings simples + Red neuronal PyTorch (fase3_pytorch.py)
 En esta fase se implementa un modelo neuronal ligero utilizando PyTorch. Se parte del texto limpio del dataset procesado para generar embeddings simples basados en un vocabulario limitado y entrenar una red neuronal capaz de clasificar noticias hiperpartidistas.
