@@ -181,7 +181,7 @@ Los resultados obtenidos se almacenan para su comparación directa con las fases
 ![Curvas ROC](images/roc_TFIDF_Sklearn.png)-->
 
 
-##### 5.1.3.2.1 Resultados TF-IDF + Red neuronal (PyTorch)
+###### 5.1.3.2.1 Resultados TF-IDF + Red neuronal (PyTorch)
 <p align="center">
   <img src="images/conf_matrix_TFIDF_PyTorch.png" width="300" />
   <img src="images/roc_TFIDF_PyTorch.png" width="300" />
@@ -189,7 +189,7 @@ Los resultados obtenidos se almacenan para su comparación directa con las fases
 <!--![Matriz de confusión con TF-IDF PyTorch](images/conf_matrix_TFIDF_PyTorch.png)
 ![alt text](images/roc_TFIDF_PyTorch.png)-->
 
-##### 5.1.3.2.2 Resultados TF-IDF + Red neuronal (PyTorch) con Early Stopping
+###### 5.1.3.2.2 Resultados TF-IDF + Red neuronal (PyTorch) con Early Stopping
 <p align="center">
   <img src="images/conf_matrix_TFIDF_PyTorch_E_S.png" width="300" />
   <img src="images/roc_TFIDF_PyTorch_E_S.png" width="300" />
@@ -209,7 +209,7 @@ Durante el entrenamiento del modelo TF-IDF + PyTorch con un máximo de 200 époc
 
 Este comportamiento confirma la presencia de un incipiente sobreajuste a partir de las últimas épocas, donde el modelo sigue optimizando el conjunto de entrenamiento sin lograr mejoras equivalentes en validación.
 
-### 5.1.4 Conclusiones
+#### 5.1.4 Conclusiones
 
 El uso de early stopping en la red neuronal basada en TF-IDF permite mejorar notablemente el equilibrio entre clases, aumentando la detección de contenido hiperpartidista y reduciendo el sobreajuste.
 Este ajuste se refleja en una ROC-AUC ≈ 0.85, comparable al modelo clásico, y en una matriz de confusión más balanceada.
@@ -219,7 +219,7 @@ En conjunto, early stopping demuestra ser una técnica clave para estabilizar el
 
 En esta fase se utiliza una segunda estrategia de representación vectorial basada en Word2Vec, empleando embeddings preentrenados sobre Google News. El objetivo es pasar de una representación dispersa basada en frecuencias (TF-IDF) a una representación densa y semántica, donde palabras con significados similares tienden a ocupar posiciones cercanas en el espacio vectorial.
 
-### 5.2.1 Carga del modelo Word2Vec (Google News)
+#### 5.2.1 Carga del modelo Word2Vec (Google News)
 
 Se carga el modelo word2vec-google-news-300, un modelo preentrenado de gran tamaño (≈ 1.6 GB) que proporciona vectores de 300 dimensiones para palabras del vocabulario. Al tratarse de un modelo preentrenado, no se ajustan los embeddings durante el proyecto: se reutilizan directamente como fuente de información semántica.
 
