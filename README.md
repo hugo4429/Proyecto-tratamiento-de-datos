@@ -180,7 +180,7 @@ Los resultados obtenidos se almacenan para su comparación directa con las fases
 ![Curvas ROC](images/roc_TFIDF_Sklearn.png)-->
 
 
-#### 5.3.2 Resultados TF-IDF + Red neuronal (PyTorch)
+#### 5.3.2.1 Resultados TF-IDF + Red neuronal (PyTorch)
 <p align="center">
   <img src="images/conf_matrix_TFIDF_PyTorch.png" width="300" />
   <img src="images/roc_TFIDF_PyTorch.png" width="300" />
@@ -188,14 +188,13 @@ Los resultados obtenidos se almacenan para su comparación directa con las fases
 <!--![Matriz de confusión con TF-IDF PyTorch](images/conf_matrix_TFIDF_PyTorch.png)
 ![alt text](images/roc_TFIDF_PyTorch.png)-->
 
-Además, con el objetivo de mejorar la capacidad de generalización del modelo neuronal y evitar el sobreajuste, se ha incorporado la técnica de early stopping durante el entrenamiento de la red neuronal implementada en PyTorch.
-
-Early stopping es un método de regularización que detiene automáticamente el proceso de entrenamiento cuando el rendimiento del modelo sobre un conjunto de validación deja de mejorar. A diferencia de otras técnicas que actúan directamente sobre la arquitectura (como Dropout), early stopping controla el número efectivo de épocas de entrenamiento.
-
-La idea fundamental es que, a partir de cierto punto, el modelo continúa reduciendo el error en el conjunto de entrenamiento, pero comienza a empeorar su rendimiento en datos no vistos, lo que es indicativo de overfitting. Early stopping identifica este punto y conserva el modelo correspondiente a la mejor época en validación.
-
-![Matriz de confusión con TF-IDF Early-stop](conf_matrix_W2V_Google_PyTorch_E_S.png)
-![Curvas ROC ](roc_TFIDF_Sklearn_E_S.png)
+#### 5.3.2.2 Resultados TF-IDF + Red neuronal (PyTorch) con Early Stopping
+<p align="center">
+  <img src="images/conf_matrix_TFIDF_Google_PyTorch_E_S.png" width="300" />
+  <img src="images/roc_TFIDF_Sklearn_E_S.png" width="300" />
+</p>
+<!--![Matriz de confusión con TF-IDF Early-stop](images/conf_matrix_TFIDF_Google_PyTorch_E_S.png)
+![Curvas ROC ](images/roc_TFIDF_Sklearn_E_S.png)-->
 
 Durante el entrenamiento del modelo TF-IDF + PyTorch con un máximo de 100 épocas, se observa la siguiente evolución:
 
