@@ -180,7 +180,7 @@ Los resultados obtenidos se almacenan para su comparación directa con las fases
 <!--![Matriz de confusión con TF-IDF PyTorch](images/conf_matrix_TFIDF_PyTorch.png)
 ![alt text](images/roc_TFIDF_PyTorch.png)-->
 
-###### 5.1.3.2 Resultados TF-IDF + Red neuronal (PyTorch) con Early Stopping
+###### 5.1.3.3 Resultados TF-IDF + Red neuronal (PyTorch) con Early Stopping
 <p align="center">
   <img src="images/conf_matrix_TFIDF_PyTorch_E_S.png" width="300" />
   <img src="images/roc_TFIDF_PyTorch_E_S.png" width="300" />
@@ -475,6 +475,7 @@ AUC-ROC de RoBERTa: 0.9
 En la comparación global de modelos se observa una clara mejora del rendimiento a medida que se emplean representaciones semánticas más ricas y arquitecturas más expresivas. Los enfoques basados en TF-IDF ofrecen un rendimiento competitivo como línea base, destacando especialmente la implementación en PyTorch, que supera a su equivalente en Scikit-learn tanto en accuracy como en AUC-ROC. Los modelos basados en Word2Vec presentan un rendimiento inferior, lo que indica que el promedio de embeddings estáticos no captura adecuadamente el contexto semántico de las noticias. Al incorporar embeddings contextuales de BERT, el rendimiento mejora de forma notable, especialmente en términos de AUC-ROC, reflejando una mayor capacidad discriminativa del modelo. La mejor combinación corresponde a BERT Embeddings + PyTorch, que alcanza la mayor accuracy (0.8763) y el AUC-ROC más alto (0.9158), confirmando la ventaja de combinar representaciones contextuales con modelos neuronales entrenables. Por su parte, RoBERTa, ajustado mediante fine-tuning completo, obtiene resultados competitivos (accuracy ≈ 0.81, AUC-ROC ≈ 0.90), situándose por encima de la mayoría de enfoques clásicos y confirmando la eficacia de los Transformers, aunque en este caso sin superar a la mejor configuración basada en embeddings BERT y PyTorch.
 
 ##    8. Extensión del proyecto
+### 8.1 Clustering
 
 ![alt text](images/clustering.jpeg)
 
@@ -499,6 +500,8 @@ El análisis de clustering revela que la polarización no es uniforme:
 Mientras que la política general (Grupo 2: Trump vs. Clinton) el 51% de las noticias son hiperpartidistas, los eventos de sucesos trágicos (Grupo 1: Tiroteo de Las Vegas) muestran una resistencia a la desinformación, con un 80% de cobertura neutra.
 
 Esto sugiere que las campañas de desinformación son selectivas y atacan prioritariamente los temas donde la división política ya existe (elecciones), mientras que tienen menos tracción en eventos puramente factuales o trágicos.
+
+### 8.2 Clustering
 
 ##    9. Conclusión
 Este proyecto implementa un pipeline completo de procesamiento y clasificación de texto, cubriendo desde métodos clásicos (TF-IDF) hasta modelos modernos basados en Transformers como DistilBERT.
