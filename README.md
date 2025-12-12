@@ -14,7 +14,7 @@ Concretamente, el proyecto implementa y compara:
 
 - Tres representaciones del texto:
   - TF-IDF (representación clásica basada en frecuencias)
-  - Embeddings simples con PyTorch
+  - Word2vec (Embeddings simples con PyTorch)
   - Embeddings contextuales con Transformers (BERT, RoBERTa)
 
 - Tres tipos de modelos de clasificación:
@@ -106,12 +106,13 @@ TF-IDF se emplea como baseline para comparar posteriormente su rendimiento frent
 
 La vectorización del texto se realiza con los siguientes parámetros:
 
-- Número máximo de características (max_features): 3000
-  Se limita el vocabulario a los 3000 términos más relevantes para reducir dimensionalidad y ruido.
-- Eliminación de stopwords: inglés
+- Número máximo de características (max_features): **3000**
+
+  Se limita el vocabulario a los términos más relevantes para reducir dimensionalidad y ruido.
+- Eliminación de stopwords: **inglés**
   Se eliminan palabras funcionales sin carga semántica relevante.
 
-- Frecuencia mínima de documento (min_df): 10
+- Frecuencia mínima de documento (min_df): **10**
   Se descartan términos que aparecen en menos de 10 documentos, evitando términos demasiado raros.
 
 El vectorizador se ajusta exclusivamente sobre el conjunto de entrenamiento y posteriormente se aplica al conjunto de validación y test, evitando filtrado de información entre conjuntos (data leakage).
@@ -238,7 +239,7 @@ Se entrena un clasificador lineal de Regresión Logística sobre los vectores Wo
 
 El modelo genera probabilidades para la clase hiperpartidista y se evalúa con las mismas métricas del pipeline: Accuracy y ROC-AUC, además de guardar matriz de confusión y curva ROC.
 
-B. Word2Vec + Red neuronal (PyTorch) con Early Stopping
+**B. Word2Vec + Red neuronal (PyTorch) con Early Stopping**
 
 Como alternativa no lineal, se entrena una red neuronal feed-forward en PyTorch usando los embeddings Word2Vec como entrada:
 
