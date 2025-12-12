@@ -209,6 +209,19 @@ Durante el entrenamiento del modelo TF-IDF + PyTorch con un máximo de 200 époc
 
 Este comportamiento confirma la presencia de un incipiente sobreajuste a partir de las últimas épocas, donde el modelo sigue optimizando el conjunto de entrenamiento sin lograr mejoras equivalentes en validación.
 
+- Métricas de error
+
+| Época | Train Loss | Val Loss |
+|------:|-----------:|---------:|
+| 10 | 0.6762 | 0.6822 |
+| 20 | 0.6135 | 0.6517 |
+| 30 | 0.4830 | 0.6055 |
+| 40 | 0.3076 | 0.5732 |
+
+*Early Stopping:* activado en época *48*
+
+Se ha conseguido un *accuracy* TFIDF + Sklearn de 0.7423 y, TFIDF + PyTorch de 0.8041 
+
 #### 5.1.4 Conclusiones
 
 El uso de early stopping en la red neuronal basada en TF-IDF permite mejorar notablemente el equilibrio entre clases, aumentando la detección de contenido hiperpartidista y reduciendo el sobreajuste.
@@ -293,6 +306,26 @@ Los resultados se almacenan en una estructura común para facilitar la comparaci
   <img src="images/conf_matrix_W2V_Google_PyTorch_E_S.png" width="300" />
   <img src="images/roc_W2V_Google_PyTorch_E_S.png" width="300" />
 </p>
+- Métricas de error
+
+| Época | Train Loss | Val Loss |
+|------:|-----------:|---------:|
+| 10 | 0.6621 | 0.6624 |
+| 20 | 0.6519 | 0.6561 |
+| 30 | 0.6395 | 0.6434 |
+| 40 | 0.6180 | 0.6201 |
+| 50 | 0.5770 | 0.5877 |
+| 60 | 0.5449 | 0.5695 |
+| 70 | 0.5045 | 0.5627 |
+| 80 | 0.4737 | 0.5548 |
+| 90 | 0.4489 | 0.5469 |
+| 100 | 0.4266 | 0.5378 |
+| 110 | 0.3955 | 0.5327 |
+| 120 | 0.3867 | 0.5337 |
+
+*Early Stopping:* activado en época *121*
+Se ha conseguido un *accuracy* W2V_Google + Sklearn de 0.6907 y, W2V_Google + PyTorch de 0.7216
+
 
 ### 5.3. Embeddings contextuales con BERT (DistilBERT)
 
@@ -321,10 +354,6 @@ Cada texto se procesa individualmente mediante el tokenizador de DistilBERT, que
 - Procesamiento en modo inferencia (no_grad), sin cálculo de gradientes
 
 A partir de la salida del modelo, se extrae el embedding correspondiente al token [CLS], que actúa como una representación global del documento. Este vector tiene 768 dimensiones y se utiliza como representación final del texto.
-
-El resultado es una matriz de embeddings densos para cada partición del dataset:
-
-- X_train_bert, X_val_bert, X_test_bert con dimensión (n_documentos, 768).
 
 #### 5.3.3 Modelos evaluados con embeddings BERT
 
@@ -360,7 +389,7 @@ Este enfoque permite analizar si una arquitectura neuronal sencilla es capaz de 
 
 Ambos modelos se evalúan sobre el conjunto de test utilizando las mismas métricas que en el resto del proyecto:
 
-- Accuracy
+- Métricas de error
 
 | Época | Train Loss | Val Loss |
 |------:|-----------:|---------:|
