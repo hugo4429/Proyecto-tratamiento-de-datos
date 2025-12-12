@@ -430,8 +430,8 @@ Se aplica early stopping con una paciencia de cinco épocas. El entrenamiento se
 Se generan dos visualizaciones para facilitar la interpretación de los resultados: matriz de confusión y curva ROC
 
 <p align="center">
-  <img src="images/conf_matrix_roberta_final.png" width="300" />
-  <img src="images/roc_roberta_final.png" width="300" />
+  <img src="images/matriz_roberta.jpeg" width="300" />
+  <img src="images/ROC_roberta.jpeg" width="300" />
 </p>
 
 -Métricas de error:
