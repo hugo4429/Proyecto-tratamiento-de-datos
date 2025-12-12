@@ -172,7 +172,7 @@ Los resultados obtenidos se almacenan para su comparación directa con las fases
 ![Curvas ROC](images/roc_TFIDF_Sklearn.png)-->
 
 
-###### 5.1.3.2 Resultados TF-IDF + Red neuronal (PyTorch)
+##### 5.1.3.2 Resultados TF-IDF + Red neuronal (PyTorch)
 <p align="center">
   <img src="images/conf_matrix_TFIDF_PyTorch.png" width="300" />
   <img src="images/roc_TFIDF_PyTorch.png" width="300" />
@@ -180,7 +180,7 @@ Los resultados obtenidos se almacenan para su comparación directa con las fases
 <!--![Matriz de confusión con TF-IDF PyTorch](images/conf_matrix_TFIDF_PyTorch.png)
 ![alt text](images/roc_TFIDF_PyTorch.png)-->
 
-###### 5.1.3.3 Resultados TF-IDF + Red neuronal (PyTorch) con Early Stopping
+##### 5.1.3.3 Resultados TF-IDF + Red neuronal (PyTorch) con Early Stopping
 <p align="center">
   <img src="images/conf_matrix_TFIDF_PyTorch_E_S.png" width="300" />
   <img src="images/roc_TFIDF_PyTorch_E_S.png" width="300" />
