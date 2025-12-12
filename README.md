@@ -281,13 +281,20 @@ Para ambas variantes (Scikit-learn y PyTorch) se generan automáticamente:
 
 Los resultados se almacenan en una estructura común para facilitar la comparación con TF-IDF y con las fases posteriores del proyecto.
 #### 6.5.1 Resultados Word2Vec + Regresión Logística (Scikit-learn)
-![alt text](images/conf_matrix_W2V_Google_Sklearn.png)
-![alt text](images/roc_W2V_Google_Sklearn.png)
+<p align="center">
+  <img src="images/conf_matrix_W2V_Google_Sklearn.png" width="300" />
+  <img src="images/roc_W2V_Google_Sklearn.png" width="300" />
+</p>
+
 #### 6.5.2 Resultados Word2Vec + Red neuronal (PyTorch)
-![alt text](images/conf_matrix_W2V_Google_PyTorch.png)
-![alt text](images/roc_W2V_Google_PyTorch.png)
-![alt text](images/conf_matrix_W2V_Google_PyTorch_E_S.png)
-![alt text](images/roc_W2V_Google_PyTorch_E_S.png)
+<p align="center">
+  <img src="images/conf_matrix_W2V_Google_PyTorch.png" width="300" />
+  <img src="images/roc_W2V_Google_PyTorch.png" width="300" />
+</p>
+<p align="center">
+  <img src="images/conf_matrix_W2V_Google_PyTorch_E_S.png" width="300" />
+  <img src="images/roc_W2V_Google_PyTorch_E_S.png" width="300" />
+</p>
 
 ## 7. Fase 4 – Embeddings contextuales con BERT (DistilBERT)
 
