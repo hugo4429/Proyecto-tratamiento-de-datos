@@ -275,25 +275,81 @@ Los resultados se almacenan en una estructura común para facilitar la comparaci
 ![alt text](images/conf_matrix_W2V_Google_PyTorch_E_S.png)
 ![alt text](images/roc_W2V_Google_PyTorch_E_S.png)
 
-##    7. Fase 4 – DistilBERT Fine-Tuning (fase4_bert.py)
-- *Objetivos*:
-    - Tokenizar el texto con el tokenizador oficial de DistilBERT.
-    - Ajustar (fine-tune) sus pesos para la clasificación binaria.
-    - Evaluar modelo final.
-- *Resultados*:
-Accuracy final.
+## 7. Fase 4 – Embeddings contextuales con BERT (DistilBERT)
 
-classification_report.
+En esta fase se emplea una representación del texto basada en embeddings contextuales obtenidos mediante un modelo Transformer preentrenado. Concretamente, se utiliza DistilBERT, una versión más ligera de BERT que mantiene gran parte de su capacidad representacional con un menor coste computacional.
 
-Carpeta resultados_bert/ con:
+El objetivo de esta fase es evaluar si una representación contextual, capaz de tener en cuenta el significado de las palabras en función de su contexto, mejora la detección de noticias hiperpartidistas frente a representaciones estáticas como TF-IDF o Word2Vec.
 
-Checkpoints
+### 7.1 Modelo utilizado: DistilBERT
 
-Logs
+Se emplea el modelo distilbert-base-uncased, preentrenado sobre grandes corpus de texto en inglés mediante tareas de modelado del lenguaje. Sus principales características son:
 
-Métricas de entrenamiento
+- Tipo de modelo: Transformer encoder
+- Uso de atención para capturar dependencias contextuales
+- Dimensión del embedding: 768
+- Texto en minúsculas (uncased)
+- Modelo preentrenado, sin ajuste adicional de sus pesos (no fine-tuning)
 
-Este es el modelo más potente del proyecto.
+En esta fase, DistilBERT se utiliza exclusivamente como extractor de características, no como clasificador end-to-end.
+
+### 7.2 Extracción de embeddings a nivel de documento
+
+Cada texto se procesa individualmente mediante el tokenizador de DistilBERT, que convierte el texto en tokens compatibles con el modelo. Para controlar el coste computacional y asegurar una longitud uniforme, se aplica:
+
+- Truncado a un máximo de 256 tokens
+- Padding automático
+- Procesamiento en modo inferencia (no_grad), sin cálculo de gradientes
+
+A partir de la salida del modelo, se extrae el embedding correspondiente al token [CLS], que actúa como una representación global del documento. Este vector tiene 768 dimensiones y se utiliza como representación final del texto.
+
+El resultado es una matriz de embeddings densos para cada partición del dataset:
+
+- X_train_bert, X_val_bert, X_test_bert con dimensión (n_documentos, 768).
+
+### 7.3 Modelos evaluados con embeddings BERT
+
+Al igual que en las fases anteriores, se evalúan dos enfoques de clasificación sobre los embeddings extraídos con BERT, manteniendo la coherencia experimental.
+
+**A. BERT Embeddings + Regresión Logística (Scikit-learn)**
+
+En primer lugar, se entrena un modelo de Regresión Logística utilizando como entrada los embeddings BERT de 768 dimensiones.
+
+Configuración principal del clasificador:
+
+- Número máximo de iteraciones: 1000
+- Pesos de clase balanceados
+- Semilla fija para reproducibilidad
+
+Este enfoque permite evaluar hasta qué punto la información contextual capturada por BERT es separable mediante un clasificador lineal.
+
+**B. BERT Embeddings + Red neuronal (PyTorch) con Early Stopping**
+
+Como alternativa no lineal, se entrena una red neuronal feed-forward en PyTorch utilizando los embeddings BERT como entrada.
+
+Características del entrenamiento:
+
+- Dimensión de entrada: 768
+- Número máximo de épocas: 100
+- Early stopping activado con patience = 5
+
+Uso explícito del conjunto de validación para detener el entrenamiento y recuperar el mejor modelo
+
+Este enfoque permite analizar si una arquitectura neuronal sencilla es capaz de explotar mejor la riqueza semántica de los embeddings contextuales.
+
+### 7.4 Evaluación y objetivo comparativo
+
+Ambos modelos se evalúan sobre el conjunto de test utilizando las mismas métricas que en el resto del proyecto:
+
+- Accuracy
+- ROC-AUC
+
+Además, se generan automáticamente:
+
+- Matrices de confusión
+- Curvas ROC
+
+Los resultados obtenidos en esta fase permiten comparar de forma directa TF-IDF, Word2Vec y BERT embeddings, analizando el impacto de pasar de representaciones basadas en frecuencias, a embeddings estáticos, y finalmente a embeddings contextuales, manteniendo constante el esquema de evaluación y los clasificadores empleados.
 
 ##    8. Comparación final de modelos
 Representación	Modelo	Complejidad	Esperado
