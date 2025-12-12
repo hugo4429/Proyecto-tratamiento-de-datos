@@ -37,7 +37,7 @@ grafico_longitud.png            # Histograma de longitudes
 grafico_entrenamiento_pytorch.png
 requirements.txt                # Dependencias
 README.md                        # Memoria del proyecto
-
+```
 
 ##   3. Instalación del entorno
 
