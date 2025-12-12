@@ -39,30 +39,21 @@ requirements.txt                  Dependencias
 README.md                         Memoria del proyecto
 ```
 
-##   3. Instalación del entorno
+## 3. Instalación del entorno
 
-Para garantizar la correcta ejecución del proyecto, se recomienda crear un entorno virtual e instalar las dependencias necesarias.
+Para garantizar la correcta ejecución del proyecto, se utiliza *Conda* como gestor de entornos.
 
-- Creación del entorno virtual
-    - python -m venv env
-- Activación del entorno
-    - Windows: env\Scripts\activate
-    - Linux / macOS: source env/bin/activate
-- Instalación de dependencias
-    - pip install -r requirements.txt
+### Requisitos
+- Conda (Anaconda o Miniconda)
+- Python 3.10
+- GPU NVIDIA recomendada (opcional, pero acelera el entrenamiento)
 
-Las bibliotecas empleadas incluyen, entre otras:
+### Creación del entorno
 
- - pandas  
- - numpy  
- - scikit-learn  
- - matplotlib  
- - datasets (HuggingFace)  
- - transformers (HuggingFace)  
- - beautifulsoup4  
- - torch (PyTorch)
-
-
+```bash
+conda env create -f environment.yml
+conda activate datosenv2
+```
 ##    4. Fase 1 – Preprocesado y creación del dataset (main.py)
 
 En esta fase se lleva a cabo la construcción del dataset final utilizado en las etapas de modelado. Se parte del conjunto Hyperpartisan News Detection en su configuración byarticle y se aplican técnicas sistemáticas de limpieza, normalización y análisis exploratorio.
@@ -421,6 +412,9 @@ Además, se generan automáticamente:
 | 50 | 0.3845 | 0.4700 |
 
 *Early Stopping:* activado en época *55*
+
+## 6. Fase 3 - FineTunning (RoBERTa)
+
 
 
 ##    8. Comparación final de modelos
