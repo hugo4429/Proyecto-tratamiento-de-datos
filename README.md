@@ -266,13 +266,13 @@ Para ambas variantes (Scikit-learn y PyTorch) se generan automáticamente:
 - Curva ROC
 
 Los resultados se almacenan en una estructura común para facilitar la comparación con TF-IDF y con las fases posteriores del proyecto.
-### 6.5.1 Resultados Word2Vec + Regresión Logística (Scikit-learn)
+#### 6.5.1 Resultados Word2Vec + Regresión Logística (Scikit-learn)
 ![alt text](images/conf_matrix_W2V_Google_Sklearn.png)
 ![alt text](images/roc_W2V_Google_Sklearn.png)
-### 6.5.2 Resultados Word2Vec + Red neuronal (PyTorch)
+#### 6.5.2 Resultados Word2Vec + Red neuronal (PyTorch)
 ![alt text](images/conf_matrix_W2V_Google_PyTorch.png)
 ![alt text](images/roc_W2V_Google_PyTorch.png)
-![alt text](images/conf_matrix_W2V_Google_PyTorch_E_S-1.png)
+![alt text](images/conf_matrix_W2V_Google_PyTorch_E_S.png)
 ![alt text](images/roc_W2V_Google_PyTorch_E_S.png)
 
 ##    7. Fase 4 – DistilBERT Fine-Tuning (fase4_bert.py)
