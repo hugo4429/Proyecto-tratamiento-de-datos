@@ -24,32 +24,42 @@ Concretamente, el proyecto implementa y compara:
 
 El dataset empleado es Hyperpartisan News Detection, disponible en Hugging Face, ampliamente utilizado en tareas de detección de sesgo ideológico.
 
-##   2. Estructura del repositorio
 
 ## 2. Estructura del repositorio
 
-- **main.py**: Fase 1 – Preprocesado, limpieza y análisis exploratorio (EDA)
-- **fase2_tfidf.py**: Fase 2 – Representación TF-IDF y Regresión Logística
-- **fase3_pytorch.py**: Fase 3 – Red neuronal con embeddings propios (PyTorch)
-- **fase4_bert.py**: Fase 4 – Fine-tuning de DistilBERT
-- **dataset_procesado_final.csv**: Dataset final limpio y preparado
-- **grafico_longitud.png**: Histograma de longitudes de texto
-- **grafico_entrenamiento_pytorch.png**: Curva de entrenamiento de la red neuronal
-- **requirements.txt**: Dependencias del proyecto
-- **README.md**: Memoria y documentación del proyecto
+```text
+main.py                         # Fase 1: Preprocesado, limpieza y EDA
+fase2_tfidf.py                  # Fase 2: TF-IDF + Regresión Logística
+fase3_pytorch.py                # Fase 3: Red neuronal con embeddings propios
+fase4_bert.py                   # Fase 4: Fine-tuning de DistilBERT
+dataset_procesado_final.csv     # Dataset final limpio
+grafico_longitud.png            # Histograma de longitudes
+grafico_entrenamiento_pytorch.png
+requirements.txt                # Dependencias
+README.md                        # Memoria del proyecto
 
 
 ##   3. Instalación del entorno
 
-Para garantizar la correcta ejecución del proyecto se recomienda la creación de un entorno virtual de Python y la instalación controlada de todas las dependencias necesarias.
+Para garantizar la correcta ejecución del proyecto, se recomienda crear un entorno virtual e instalar las dependencias necesarias.
 
-Creación del entorno virtual
- - python -m venv env
-Activación del entorno:
- - Windows: env\Scripts\activate
- - Linux / macOS: source env/bin/activate
-Instalación de dependencias:
- - pip install -r requirements.txt
+### Creación del entorno virtual
+
+```bash
+python -m venv env
+Activación del entorno
+Windows:
+
+bash
+env\Scripts\activate
+Linux / macOS:
+
+bash
+
+source env/bin/activate
+Instalación de dependencias
+bash
+pip install -r requirements.txt
 
 Las bibliotecas empleadas incluyen, entre otras:
 
