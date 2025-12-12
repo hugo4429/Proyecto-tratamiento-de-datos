@@ -470,7 +470,7 @@ AUC-ROC de RoBERTa: 0.9
 
 En la comparación global de modelos se observa una clara mejora del rendimiento a medida que se emplean representaciones semánticas más ricas y arquitecturas más expresivas. Los enfoques basados en TF-IDF ofrecen un rendimiento competitivo como línea base, destacando especialmente la implementación en PyTorch, que supera a su equivalente en Scikit-learn tanto en accuracy como en AUC-ROC. Los modelos basados en Word2Vec presentan un rendimiento inferior, lo que indica que el promedio de embeddings estáticos no captura adecuadamente el contexto semántico de las noticias. Al incorporar embeddings contextuales de BERT, el rendimiento mejora de forma notable, especialmente en términos de AUC-ROC, reflejando una mayor capacidad discriminativa del modelo. La mejor combinación corresponde a BERT Embeddings + PyTorch, que alcanza la mayor accuracy (0.8763) y el AUC-ROC más alto (0.9158), confirmando la ventaja de combinar representaciones contextuales con modelos neuronales entrenables. Por su parte, RoBERTa, ajustado mediante fine-tuning completo, obtiene resultados competitivos (accuracy ≈ 0.81, AUC-ROC ≈ 0.90), situándose por encima de la mayoría de enfoques clásicos y confirmando la eficacia de los Transformers, aunque en este caso sin superar a la mejor configuración basada en embeddings BERT y PyTorch.
 
-##    8. Extensión del proyecto
+##    8. Fase 4 - Extensión del proyecto
 
 ![alt text](images/clustering.jpeg)
 
