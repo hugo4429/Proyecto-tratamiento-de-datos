@@ -215,7 +215,7 @@ El uso de early stopping en la red neuronal basada en TF-IDF permite mejorar not
 Este ajuste se refleja en una ROC-AUC ≈ 0.85, comparable al modelo clásico, y en una matriz de confusión más balanceada.
 En conjunto, early stopping demuestra ser una técnica clave para estabilizar el entrenamiento en arquitecturas neuronales simples.
 
-### 5.2. Fase 3 – Word2Vec preentrenado (Google News) y clasificación
+### 5.2. Word2Vec preentrenado (Google News) y clasificación
 
 En esta fase se utiliza una segunda estrategia de representación vectorial basada en Word2Vec, empleando embeddings preentrenados sobre Google News. El objetivo es pasar de una representación dispersa basada en frecuencias (TF-IDF) a una representación densa y semántica, donde palabras con significados similares tienden a ocupar posiciones cercanas en el espacio vectorial.
 
@@ -294,7 +294,7 @@ Los resultados se almacenan en una estructura común para facilitar la comparaci
   <img src="images/roc_W2V_Google_PyTorch_E_S.png" width="300" />
 </p>
 
-### 5.3. Fase 4 – Embeddings contextuales con BERT (DistilBERT)
+### 5.3. Embeddings contextuales con BERT (DistilBERT)
 
 En esta fase se emplea una representación del texto basada en embeddings contextuales obtenidos mediante un modelo Transformer preentrenado. Concretamente, se utiliza DistilBERT, una versión más ligera de BERT que mantiene gran parte de su capacidad representacional con un menor coste computacional.
 
@@ -361,20 +361,29 @@ Este enfoque permite analizar si una arquitectura neuronal sencilla es capaz de 
 Ambos modelos se evalúan sobre el conjunto de test utilizando las mismas métricas que en el resto del proyecto:
 
 - Accuracy
-- ROC-AUC
+
+| Época | Train Loss | Val Loss |
+|------:|-----------:|---------:|
+| 10 | 0.6242 | 0.6176 |
+| 20 | 0.5447 | 0.5397 |
+| 30 | 0.4604 | 0.5024 |
+| 40 | 0.4304 | 0.4827 |
+| 50 | 0.3845 | 0.4700 |
+
+*Early Stopping:* activado en época *55*
 
 Además, se generan automáticamente:
 
 - Matrices de confusión
 - Curvas ROC
 
-##### 5.3.4.1 Resultados Word2Vec + Regresión Logística (Scikit-learn)
+##### 5.3.4.1 Resultados BERT + Regresión Logística (Scikit-learn)
 <p align="center">
   <img src="images/conf_matrix_BERT_Emb_Sklearn.png" width="300" />
   <img src="images/roc_BERT_Emb_Sklearn.png" width="300" />
 </p>
 
-##### 5.3.4.1 Resultados Word2Vec + Red neuronal (PyTorch)
+##### 5.3.4.1 Resultados BERT + Red neuronal (PyTorch)
 <p align="center">
   <img src="images/conf_matrix_BERT_Emb_PyTorch.png" width="300" />
   <img src="images/roc_BERT_Emb_PyTorch.png" width="300" />
