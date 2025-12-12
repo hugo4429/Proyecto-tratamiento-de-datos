@@ -415,6 +415,47 @@ Además, se generan automáticamente:
 
 ## 6. Fase 3 - FineTunning (RoBERTa)
 
+El fine-tuning del modelo RoBERTa se configura mediante TrainingArguments, utilizando una tasa de aprendizaje baja (2e-5), habitual en modelos Transformer, y regularización mediante weight decay para reducir el sobreajuste.
+El entrenamiento se realiza durante un máximo de 20 épocas, evaluando y guardando el modelo al final de cada una.
+
+La métrica principal seleccionada para la optimización es F1 macro, más adecuada que la accuracy en presencia de desbalance entre clases. El mejor modelo se recupera automáticamente al finalizar el entrenamiento.
+
+Durante el entrenamiento y la validación se evalúan accuracy y F1 macro.
+Adicionalmente, se implementa un Trainer personalizado que incorpora pesos de clase en la función de pérdida (CrossEntropyLoss), penalizando con mayor intensidad los errores en la clase minoritaria.
+
+Se aplica early stopping con una paciencia de cinco épocas. El entrenamiento se detiene automáticamente si la métrica F1 no mejora, evitando sobreajuste y reduciendo el coste computacional.
+
+### 6.1 Resultados RoBERTa
+
+Se generan dos visualizaciones para facilitar la interpretación de los resultados: matriz de confusión y curva ROC
+
+<p align="center">
+  <img src="images/conf_matrix_roberta_final.png" width="300" />
+  <img src="images/roc_roberta_final.png" width="300" />
+</p>
+
+-Métricas de error
+
+| Epoch | Training Loss | Validation Loss | Accuracy | F1 |
+|------:|--------------:|----------------:|---------:|----:|
+| 1 | 0.495700 | 0.402782 | 0.819277 | 0.802788 |
+| 2 | 0.393400 | 0.491681 | 0.855422 | 0.852837 |
+| 3 | 0.225300 | 0.931068 | 0.771084 | 0.710376 |
+| 4 | 0.325900 | 0.906247 | 0.819277 | 0.792119 |
+| 5 | 0.174300 | 0.474258 | 0.903614 | 0.898284 |
+| 6 | 0.007900 | 0.747138 | 0.867470 | 0.855378 |
+| 7 | 0.047900 | 1.176057 | 0.831325 | 0.811364 |
+| 8 | 0.000400 | 0.772608 | 0.855422 | 0.843396 |
+| 9 | 0.000300 | 0.783316 | 0.891566 | 0.884882 |
+| 10 | 0.000200 | 1.080631 | 0.855422 | 0.840996 |
+
+| Clase | Precision | Recall | F1-score | Support |
+|------|----------:|-------:|---------:|--------:|
+| Neutro | 0.92 | 0.77 | 0.84 | 61 |
+| Hiper | 0.70 | 0.89 | 0.78 | 36 |
+| *Accuracy* |  |  | *0.81* | *97* |
+| Macro Avg | 0.81 | 0.83 | 0.81 | 97 |
+| Weighted Avg | 0.84 | 0.81 | 0.82 | 97 |
 
 
 ##    8. Comparación final de modelos
@@ -427,6 +468,9 @@ Además, se generan automáticamente:
 | W2V Google + PyTorch | 0.7216 | 0.8320 |
 | BERT Embeddings + Sklearn | 0.7938 | 0.8848 |
 | *BERT Embeddings + PyTorch* | *0.8763* | *0.9158* |
+
+Accuracy de RoBERTa: 0.81
+AUC-ROC de RoBERTa: 0.87
 
 
 ##    9. Extensiones del proyecto (opcionales)
