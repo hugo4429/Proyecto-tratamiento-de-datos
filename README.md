@@ -170,26 +170,34 @@ Los resultados obtenidos se almacenan para su comparación directa con las fases
 #### 5.3.1 Resultados TF-IDF + Regresión Logística (Scikit-learn)
 
 ![Matriz de confusión con TF-IDF Scikit-learn](images/conf_matrix_TFIDF_Sklearn.png)
-![Curvas roc](images/roc_TFIDF_Sklearn.png)
-<div style="display: flex; gap: 20px; justify-content: center;">
-  <div style="text-align: center;">
-    <img src="images/conf_matrix_TFIDF_Sklearn.png" width="400">
-    <p><strong>TF-IDF + Regresión Logística</strong></p>
-  </div>
-  <div style="text-align: center;">
-    <img src="images/conf_matrix_TFIDF_PyTorch.png" width="400">
-    <p><strong>TF-IDF + PyTorch</strong></p>
-  </div>
-</div>
-![Matriz de confusión con TF-IDF PyTorch](images/conf_matrix_TFIDF_PyTorch.png)
+![Curvas ROC](images/roc_TFIDF_Sklearn.png)
+
 
 #### 5.3.2 Resultados TF-IDF + Red neuronal (PyTorch)
-#### 5.3.3 Comparación entre ambos enfoques
 
+![Matriz de confusión con TF-IDF PyTorch](images/conf_matrix_TFIDF_PyTorch.png)
+![alt text](roc_TFIDF_Sklearn-1.png)
+Además, con el objetivo de mejorar la capacidad de generalización del modelo neuronal y evitar el sobreajuste, se ha incorporado la técnica de early stopping durante el entrenamiento de la red neuronal implementada en PyTorch.
 
-gráficas
-curvas rock
-matriz de confusión
+Early stopping es un método de regularización que detiene automáticamente el proceso de entrenamiento cuando el rendimiento del modelo sobre un conjunto de validación deja de mejorar. A diferencia de otras técnicas que actúan directamente sobre la arquitectura (como Dropout), early stopping controla el número efectivo de épocas de entrenamiento.
+
+La idea fundamental es que, a partir de cierto punto, el modelo continúa reduciendo el error en el conjunto de entrenamiento, pero comienza a empeorar su rendimiento en datos no vistos, lo que es indicativo de overfitting. Early stopping identifica este punto y conserva el modelo correspondiente a la mejor época en validación.
+
+![Matriz de confusión con TF-IDF Early-stop](conf_matrix_W2V_Google_PyTorch_E_S.png)
+![Curvas ROC ](roc_TFIDF_Sklearn_E_S.png)
+
+Durante el entrenamiento del modelo TF-IDF + PyTorch con un máximo de 100 épocas, se observa la siguiente evolución:
+
+- En las primeras épocas, tanto la pérdida de entrenamiento como la pérdida de validación disminuyen de forma progresiva, lo que indica que el modelo está aprendiendo patrones relevantes a partir de los datos.
+
+- A partir de aproximadamente la época 40, la pérdida de entrenamiento continúa disminuyendo de forma significativa, mientras que la pérdida de validación empieza a estabilizarse, mostrando una mejora cada vez más marginal.
+
+- En la época 48, el mecanismo de early stopping detecta que la pérdida de validación deja de mejorar de manera consistente y detiene el entrenamiento de forma automática.
+
+- El modelo recupera los pesos correspondientes a la mejor época en validación, garantizando así el mejor compromiso entre ajuste y generalización.
+
+Este comportamiento confirma la presencia de un incipiente sobreajuste a partir de las últimas épocas, donde el modelo sigue optimizando el conjunto de entrenamiento sin lograr mejoras equivalentes en validación.
+
 
 ##    6. Fase 3 – Embeddings simples + Red neuronal PyTorch (fase3_pytorch.py)
 En esta fase se implementa un modelo neuronal ligero utilizando PyTorch. Se parte del texto limpio del dataset procesado para generar embeddings simples basados en un vocabulario limitado y entrenar una red neuronal capaz de clasificar noticias hiperpartidistas.
