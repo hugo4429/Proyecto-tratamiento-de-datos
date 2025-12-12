@@ -110,9 +110,11 @@ La vectorización del texto se realiza con los siguientes parámetros:
 
   Se limita el vocabulario a los términos más relevantes para reducir dimensionalidad y ruido.
 - Eliminación de stopwords: **inglés**
+
   Se eliminan palabras funcionales sin carga semántica relevante.
 
 - Frecuencia mínima de documento (min_df): **10**
+
   Se descartan términos que aparecen en menos de 10 documentos, evitando términos demasiado raros.
 
 El vectorizador se ajusta exclusivamente sobre el conjunto de entrenamiento y posteriormente se aplica al conjunto de validación y test, evitando filtrado de información entre conjuntos (data leakage).
@@ -169,9 +171,13 @@ Además, para cada modelo se generan y almacenan las siguientes visualizaciones:
 Los resultados obtenidos se almacenan para su comparación directa con las fases posteriores del proyecto, donde se emplean representaciones neuronales y modelos Transformer.
 
 #### 5.3.1 Resultados TF-IDF + Regresión Logística (Scikit-learn)
+<p align="center">
+  <img src="images/conf_matrix_TFIDF_Sklearn.png" width="300" />
+  <img src="images/roc_TFIDF_Sklearn.png" width="300" />
+</p>
 
-![Matriz de confusión con TF-IDF Scikit-learn](images/conf_matrix_TFIDF_Sklearn.png)
-![Curvas ROC](images/roc_TFIDF_Sklearn.png)
+<!--![Matriz de confusión con TF-IDF Scikit-learn](images/conf_matrix_TFIDF_Sklearn.png)
+![Curvas ROC](images/roc_TFIDF_Sklearn.png)-->
 
 
 #### 5.3.2 Resultados TF-IDF + Red neuronal (PyTorch)
