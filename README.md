@@ -434,7 +434,7 @@ Se generan dos visualizaciones para facilitar la interpretación de los resultad
   <img src="images/roc_roberta_final.png" width="300" />
 </p>
 
--Métricas de error
+-Métricas de error:
 
 | Epoch | Training Loss | Validation Loss | Accuracy | F1 |
 |------:|--------------:|----------------:|---------:|----:|
@@ -458,7 +458,7 @@ Se generan dos visualizaciones para facilitar la interpretación de los resultad
 | Weighted Avg | 0.84 | 0.81 | 0.82 | 97 |
 
 
-##    8. Comparación final de modelos
+##    7. Comparación final de modelos
 
 | Modelo | Accuracy | AUC-ROC |
 |------|---------:|--------:|
@@ -470,32 +470,37 @@ Se generan dos visualizaciones para facilitar la interpretación de los resultad
 | *BERT Embeddings + PyTorch* | *0.8763* | *0.9158* |
 
 Accuracy de RoBERTa: 0.81
-AUC-ROC de RoBERTa: 0.87
+AUC-ROC de RoBERTa: 0.9
 
+En la comparación global de modelos se observa una clara mejora del rendimiento a medida que se emplean representaciones semánticas más ricas y arquitecturas más expresivas. Los enfoques basados en TF-IDF ofrecen un rendimiento competitivo como línea base, destacando especialmente la implementación en PyTorch, que supera a su equivalente en Scikit-learn tanto en accuracy como en AUC-ROC. Los modelos basados en Word2Vec presentan un rendimiento inferior, lo que indica que el promedio de embeddings estáticos no captura adecuadamente el contexto semántico de las noticias. Al incorporar embeddings contextuales de BERT, el rendimiento mejora de forma notable, especialmente en términos de AUC-ROC, reflejando una mayor capacidad discriminativa del modelo. La mejor combinación corresponde a BERT Embeddings + PyTorch, que alcanza la mayor accuracy (0.8763) y el AUC-ROC más alto (0.9158), confirmando la ventaja de combinar representaciones contextuales con modelos neuronales entrenables. Por su parte, RoBERTa, ajustado mediante fine-tuning completo, obtiene resultados competitivos (accuracy ≈ 0.81, AUC-ROC ≈ 0.90), situándose por encima de la mayoría de enfoques clásicos y confirmando la eficacia de los Transformers, aunque en este caso sin superar a la mejor configuración basada en embeddings BERT y PyTorch.
 
-##    9. Extensiones del proyecto (opcionales)
-Para añadir valor al proyecto, se proponen extensiones posibles:
+##    8. Extensión del proyecto
 
-1. Explicabilidad del modelo (SHAP o LIME) ← Recomendada
-Permite identificar qué palabras contribuyen más a predecir hiperpartidismo.
+![alt text](images/clustering.jpeg)
 
-2. Optimización de hiperparámetros
-GridSearch / Optuna para mejorar:
+| Grupo | Palabras clave principales |
+|------:|----------------------------|
+| 0 | trump, people, president, said, hurricane |
+| 1 | police, said, people, paddock, man |
+| 2 | trump, president, clinton, said, people |
+| 3 | clinton, trump, fbi, comey, hillary |
+| 4 | nfl, anthem, trump, players, said |
 
-Dimensiones de embeddings
+| Cluster | Hiperpartidista (%) | Neutro (%) |
+|-------:|--------------------:|-----------:|
+| 0 | 36.5 | 63.5 |
+| 1 | 20.2 | 79.8 |
+| 2 | 50.9 | 49.1 |
+| 3 | 36.5 | 63.5 |
+| 4 | 30.3 | 69.7 |
 
-LR
+El análisis de clustering revela que la polarización no es uniforme:
 
-Max length de BERT
+Mientras que la política general (Grupo 2: Trump vs. Clinton) el 51% de las noticias son hiperpartidistas, los eventos de sucesos trágicos (Grupo 1: Tiroteo de Las Vegas) muestran una resistencia a la desinformación, con un 80% de cobertura neutra.
 
-Regularización en logística
+Esto sugiere que las campañas de desinformación son selectivas y atacan prioritariamente los temas donde la división política ya existe (elecciones), mientras que tienen menos tracción en eventos puramente factuales o trágicos.
 
-3. Curvas ROC y PR para los tres modelos
-Comparación visual muy potente.
-
-4. Añadir análisis de polaridad (sentiment analysis)
-5. Entrenar Word2Vec / FastText propio (más complejo)
-##    10. Conclusión
+##    9. Conclusión
 Este proyecto implementa un pipeline completo de procesamiento y clasificación de texto, cubriendo desde métodos clásicos (TF-IDF) hasta modelos modernos basados en Transformers como DistilBERT.
 
 La estructura modular permite extender o sustituir fácilmente cada fase del pipeline para futuras mejoras o experimentos.
