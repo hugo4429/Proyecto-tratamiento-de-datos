@@ -29,13 +29,9 @@ El dataset empleado es Hyperpartisan News Detection, disponible en Hugging Face,
 
 ```text
 main.py                           Fase 1: Preprocesado, limpieza y EDA
-fase2_tfidf.py                    Fase 2: TF-IDF + Regresión Logística
-fase3_pytorch.py                  Fase 3: Red neuronal con embeddings propios
-Modelo pesado                     Fase 2: Bert
-dataset_procesado_final.csv       Dataset final limpio
-grafico_longitud.png              Histograma de longitudes
-grafico_entrenamiento_pytorch.png
-requirements.txt                  Dependencias
+Fase_2.py                         Fase 2: TF-IDF Scikit-learn + Pytorch; Word2Vec Scikit-learn + Pytorch; BERT Scikit-learn + Pytorch
+Fase_3.py                         Fase 3: RoBERTa Pytorch
+Extensión_proyecto_datos.py       Fase 4: Extensión: Polarización de los resultados (Clustering)                         
 README.md                         Memoria del proyecto
 ```
 
@@ -475,7 +471,6 @@ AUC-ROC de RoBERTa: 0.9
 En la comparación global de modelos se observa una clara mejora del rendimiento a medida que se emplean representaciones semánticas más ricas y arquitecturas más expresivas. Los enfoques basados en TF-IDF ofrecen un rendimiento competitivo como línea base, destacando especialmente la implementación en PyTorch, que supera a su equivalente en Scikit-learn tanto en accuracy como en AUC-ROC. Los modelos basados en Word2Vec presentan un rendimiento inferior, lo que indica que el promedio de embeddings estáticos no captura adecuadamente el contexto semántico de las noticias. Al incorporar embeddings contextuales de BERT, el rendimiento mejora de forma notable, especialmente en términos de AUC-ROC, reflejando una mayor capacidad discriminativa del modelo. La mejor combinación corresponde a BERT Embeddings + PyTorch, que alcanza la mayor accuracy (0.8763) y el AUC-ROC más alto (0.9158), confirmando la ventaja de combinar representaciones contextuales con modelos neuronales entrenables. Por su parte, RoBERTa, ajustado mediante fine-tuning completo, obtiene resultados competitivos (accuracy ≈ 0.81, AUC-ROC ≈ 0.90), situándose por encima de la mayoría de enfoques clásicos y confirmando la eficacia de los Transformers, aunque en este caso sin superar a la mejor configuración basada en embeddings BERT y PyTorch.
 
 ##    8. Extensión del proyecto
-### 8.1 Clustering
 
 ![alt text](images/clustering.jpeg)
 
@@ -501,12 +496,6 @@ Mientras que la política general (Grupo 2: Trump vs. Clinton) el 51% de las not
 
 Esto sugiere que las campañas de desinformación son selectivas y atacan prioritariamente los temas donde la división política ya existe (elecciones), mientras que tienen menos tracción en eventos puramente factuales o trágicos.
 
-### 8.2 Clustering
 
 ##    9. Conclusión
-Este proyecto implementa un pipeline completo de procesamiento y clasificación de texto, cubriendo desde métodos clásicos (TF-IDF) hasta modelos modernos basados en Transformers como DistilBERT.
-
-La estructura modular permite extender o sustituir fácilmente cada fase del pipeline para futuras mejoras o experimentos.
-
-✨ Autores
-Equipo de estudiantes – UC3M, 2025
+En este proyecto se ha construido un pipeline completo y reproducible para la detección automática de contenido hiperpartidista, abarcando desde técnicas clásicas de PLN hasta modelos Transformer avanzados. Los resultados muestran que los enfoques basados en TF-IDF proporcionan un baseline sólido, aunque su rendimiento mejora al emplear arquitecturas neuronales. Por el contrario, Word2Vec presenta resultados más limitados, lo que evidencia las carencias de los embeddings estáticos para capturar el contexto ideológico. El uso de embeddings contextuales con DistilBERT, especialmente combinado con una red neuronal en PyTorch, ofrece el mejor rendimiento global, mientras que el fine-tuning de RoBERTa alcanza resultados competitivos y confirma la eficacia de los Transformers para esta tarea. Finalmente, la extensión de clustering temático revela que la polarización no es uniforme y se concentra en determinados tópicos, reforzando la idea de que el hiperpartidismo depende en gran medida del tema tratado.
