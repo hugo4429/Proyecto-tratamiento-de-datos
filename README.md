@@ -177,6 +177,7 @@ Los resultados obtenidos se almacenan para su comparación directa con las fases
 
 ![Matriz de confusión con TF-IDF PyTorch](images/conf_matrix_TFIDF_PyTorch.png)
 ![alt text](roc_TFIDF_Sklearn-1.png)
+
 Además, con el objetivo de mejorar la capacidad de generalización del modelo neuronal y evitar el sobreajuste, se ha incorporado la técnica de early stopping durante el entrenamiento de la red neuronal implementada en PyTorch.
 
 Early stopping es un método de regularización que detiene automáticamente el proceso de entrenamiento cuando el rendimiento del modelo sobre un conjunto de validación deja de mejorar. A diferencia de otras técnicas que actúan directamente sobre la arquitectura (como Dropout), early stopping controla el número efectivo de épocas de entrenamiento.
@@ -199,79 +200,80 @@ Durante el entrenamiento del modelo TF-IDF + PyTorch con un máximo de 100 époc
 Este comportamiento confirma la presencia de un incipiente sobreajuste a partir de las últimas épocas, donde el modelo sigue optimizando el conjunto de entrenamiento sin lograr mejoras equivalentes en validación.
 
 
-##    6. Fase 3 – Embeddings simples + Red neuronal PyTorch (fase3_pytorch.py)
-En esta fase se implementa un modelo neuronal ligero utilizando PyTorch. Se parte del texto limpio del dataset procesado para generar embeddings simples basados en un vocabulario limitado y entrenar una red neuronal capaz de clasificar noticias hiperpartidistas.
+## 6. Fase 3 – Word2Vec preentrenado (Google News) y clasificación
 
-Objetivos
-Construir un vocabulario a partir del conjunto de entrenamiento, seleccionando las 5000 palabras más frecuentes.
-Transformar cada texto en una secuencia de índices enteros según el vocabulario generado.
-Utilizar una arquitectura basada en:
+En esta fase se utiliza una segunda estrategia de representación vectorial basada en Word2Vec, empleando embeddings preentrenados sobre Google News. El objetivo es pasar de una representación dispersa basada en frecuencias (TF-IDF) a una representación densa y semántica, donde palabras con significados similares tienden a ocupar posiciones cercanas en el espacio vectorial.
 
-Capa Embedding entrenable.
+### 6.1 Carga del modelo Word2Vec (Google News)
 
-Average pooling para agregar información temporal.
+Se carga el modelo word2vec-google-news-300, un modelo preentrenado de gran tamaño (≈ 1.6 GB) que proporciona vectores de 300 dimensiones para palabras del vocabulario. Al tratarse de un modelo preentrenado, no se ajustan los embeddings durante el proyecto: se reutilizan directamente como fuente de información semántica.
 
-Capas densas para la clasificación binaria.
+### 6.2 Vectorización de documentos a partir de embeddings de palabras
 
-Entrenar una red neuronal simple pero efectiva para la tarea.
+Como Word2Vec produce vectores por palabra, se requiere convertir cada noticia completa en un único vector de tamaño fijo. Para ello, se implementa una representación a nivel de documento basada en el promedio (mean pooling) de los embeddings de sus palabras:
 
-Evaluar el modelo con métricas de rendimiento estándar.
+- El texto se tokeniza con nltk.word_tokenize tras pasarlo a minúsculas.
 
-Detalles técnicos implementados
+- Se filtran los tokens, quedándose solo con las palabras que están presentes en el vocabulario del modelo.
 
-Tokenización por división en palabras en minúsculas (.lower().split()).
+- Se calcula la media de los embeddings de las palabras válidas.
 
-Construcción del vocabulario mediante Counter() sobre el conjunto de entrenamiento.
+Caso especial implementado: si un documento no contiene ninguna palabra presente en el modelo, se asigna un vector de ceros de dimensión 300. Esto garantiza que todos los documentos tienen representación válida y comparable.
 
-Conversión de cada texto a una secuencia de longitud fija (max_len = 500) con padding.
+El resultado es una matriz de características densa para cada partición:
 
-Implementación del Dataset y DataLoader personalizados para PyTorch.
+- X_train_w2v, X_val_w2v, X_test_w2v con forma (n_documentos, 300).
 
-Red neuronal definida como:
+### 6.3 Modelos evaluados con Word2Vec
 
-Embedding → AveragePooling → Linear → ReLU → Linear → Sigmoid
+Para mantener la comparabilidad experimental con TF-IDF, se evalúan dos clasificadores diferentes sobre la misma representación Word2Vec.
 
+**A. Word2Vec + Regresión Logística (Scikit-learn)**
 
-Entrenamiento durante 20 épocas con optimizador Adam (lr=0.001) y función de pérdida BCELoss.
+Se entrena un clasificador lineal de Regresión Logística sobre los vectores Word2Vec de 300 dimensiones, con la siguiente configuración:
 
-Gestión del caso especial donde PyTorch devuelve un escalar cuando el batch tiene tamaño 1 (corrección implementada).
+- max_iter = 1000
+- class_weight = "balanced" (para compensar posibles desbalances de clase)
+- random_state = 42 (reproducibilidad)
 
-Registro del training loss por época y guardado del gráfico correspondiente.
+El modelo genera probabilidades para la clase hiperpartidista y se evalúa con las mismas métricas del pipeline: Accuracy y ROC-AUC, además de guardar matriz de confusión y curva ROC.
 
-Arquitectura de la red
+B. Word2Vec + Red neuronal (PyTorch) con Early Stopping
 
-Capa de embeddings (nn.Embedding, dimensión 64, padding_idx=0).
+Como alternativa no lineal, se entrena una red neuronal feed-forward en PyTorch usando los embeddings Word2Vec como entrada:
 
-Average pooling temporal (mean(dim=1)).
+- Dimensión de entrada (input_dim): 300
+- Entrenamiento con un máximo de 200 épocas
+- Early Stopping activado con patience = 5, utilizando explícitamente el conjunto de validación para detener el entrenamiento si la pérdida de validación deja de mejorar y recuperar automáticamente el mejor modelo.
 
-Capa oculta totalmente conectada (Linear(embed_dim, 32)) + ReLU.
+Este enfoque permite comprobar si, sobre una representación semántica densa como Word2Vec, un clasificador no lineal mejora el rendimiento frente al clasificador lineal.
 
-Capa final (Linear(32, 1)) + Sigmoid para clasificación binaria.
+### 6.4 Visualización de la arquitectura (diagrama de red)
 
-Resultados obtenidos
+Adicionalmente, se genera un diagrama de la arquitectura de la red neuronal utilizada con Word2Vec mediante torchviz y graphviz. Para ello se crea una instancia de la red con entrada de 300 dimensiones y se propaga un input ficticio (dummy input).
 
-Accuracy sobre el conjunto de test.
+![alt text](images/diagrama_arquitectura_w2v.png)
 
-Classification report detallado con precisión, recall y F1-score para ambas clases.
+El diagrama generado muestra la arquitectura interna de la red neuronal utilizada con Word2Vec, así como el flujo de operaciones que PyTorch emplea durante el entrenamiento. La red recibe como entrada un vector de 300 dimensiones, correspondiente al embedding Word2Vec de cada documento, y lo procesa a través de dos capas ocultas. La primera capa transforma la entrada de 300 a 128 neuronas, y la segunda reduce la representación de 128 a 64 neuronas, aplicando en ambos casos una función de activación ReLU para introducir no linealidad. Finalmente, una capa de salida de 1 neurona con activación sigmoide produce un único valor entre 0 y 1, que se interpreta como la probabilidad de que la noticia sea hiperpartidista.
 
-grafico_entrenamiento_pytorch.png con la curva de aprendizaje (evolución del loss).
-- *Objetivos*:
-    - Construir un vocabulario (top 5000 palabras más frecuentes).
-    - Convertir cada texto a una secuencia de índices.
-    - Utilizar una capa Embedding + media temporal (average pooling).
-    - Entrenar una red neuronal de clasificación.
-    - Evaluar rendimiento.
+Además de las capas y activaciones, el diagrama refleja cómo PyTorch organiza internamente los cálculos necesarios para el aprendizaje. Los bloques asociados a los pesos y sesgos de cada capa indican los parámetros entrenables del modelo, mientras que los nodos intermedios representan las operaciones matemáticas que permiten calcular los gradientes durante la retropropagación del error. Aunque el grafo puede parecer complejo, su función principal es documentar que el modelo sigue una estructura 300 → 128 → 64 → 1, coherente con la arquitectura definida, y que el entrenamiento se realiza correctamente mediante backpropagation.
 
-- *Arquitectura*:
-    - Capa de embeddings (nn.Embedding)
-    - Average pooling
-    - Capa oculta (ReLU)
-    - Capa final sigmoide
+### 6.5 Evaluación, artefactos y almacenamiento de resultados
 
-- *Resultados*:
-    - Accuracy en test.
-    - classification_report
-    - grafico_entrenamiento_pytorch.png
+Para ambas variantes (Scikit-learn y PyTorch) se generan automáticamente:
+
+- Matriz de confusión
+- Curva ROC
+
+Los resultados se almacenan en una estructura común para facilitar la comparación con TF-IDF y con las fases posteriores del proyecto.
+### 6.5.1 Resultados Word2Vec + Regresión Logística (Scikit-learn)
+![alt text](images/conf_matrix_W2V_Google_Sklearn.png)
+![alt text](images/roc_W2V_Google_Sklearn.png)
+### 6.5.2 Resultados Word2Vec + Red neuronal (PyTorch)
+![alt text](images/conf_matrix_W2V_Google_PyTorch.png)
+![alt text](images/roc_W2V_Google_PyTorch.png)
+![alt text](images/conf_matrix_W2V_Google_PyTorch_E_S-1.png)
+![alt text](images/roc_W2V_Google_PyTorch_E_S.png)
 
 ##    7. Fase 4 – DistilBERT Fine-Tuning (fase4_bert.py)
 - *Objetivos*:
