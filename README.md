@@ -191,7 +191,7 @@ Los resultados obtenidos se almacenan para su comparación directa con las fases
 #### 5.3.2.2 Resultados TF-IDF + Red neuronal (PyTorch) con Early Stopping
 <p align="center">
   <img src="images/conf_matrix_TFIDF_PyTorch_E_S.png" width="300" />
-  <img src="images/roc_TFIDF_Sklearn_E_S.png" width="300" />
+  <img src="images/roc_TFIDF_PyTorch_E_S.png" width="300" />
 </p>
 <!--![Matriz de confusión con TF-IDF Early-stop](images/conf_matrix_TFIDF_Google_PyTorch_E_S.png)
 ![Curvas ROC ](images/roc_TFIDF_Sklearn_E_S.png)-->
