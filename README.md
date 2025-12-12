@@ -26,15 +26,17 @@ El dataset empleado es Hyperpartisan News Detection, disponible en Hugging Face,
 
 ##   2. Estructura del repositorio
 
-- main.py                           # Fase 1: Preprocesado, limpieza y EDA
-- fase2_tfidf.py                    # Fase 2: TF-IDF + Regresión Logística
-- fase3_pytorch.py                  # Fase 3: Red neuronal con embeddings propios
-- fase4_bert.py                     # Fase 4: Fine-tuning de DistilBERT
-- dataset_procesado_final.csv       # Dataset final limpio
-- grafico_longitud.png              # Histograma de longitudes de texto
-- grafico_entrenamiento_pytorch.png
-- requirements.txt                  # Dependencias del proyecto
-- README.md                         # Memoria del proyecto
+## 2. Estructura del repositorio
+
+- **main.py**: Fase 1 – Preprocesado, limpieza y análisis exploratorio (EDA)
+- **fase2_tfidf.py**: Fase 2 – Representación TF-IDF y Regresión Logística
+- **fase3_pytorch.py**: Fase 3 – Red neuronal con embeddings propios (PyTorch)
+- **fase4_bert.py**: Fase 4 – Fine-tuning de DistilBERT
+- **dataset_procesado_final.csv**: Dataset final limpio y preparado
+- **grafico_longitud.png**: Histograma de longitudes de texto
+- **grafico_entrenamiento_pytorch.png**: Curva de entrenamiento de la red neuronal
+- **requirements.txt**: Dependencias del proyecto
+- **README.md**: Memoria y documentación del proyecto
 
 
 ##   3. Instalación del entorno
