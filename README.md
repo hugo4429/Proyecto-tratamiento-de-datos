@@ -95,14 +95,15 @@ En esta fase se lleva a cabo la construcción del dataset final utilizado en las
     - dataset_procesado_final.csv – dataset limpio, normalizado y preparado para las fases de vectorización y modelado.
     - grafico_longitud.png – distribución de longitudes de los textos tras el preprocesado.
 
+##  5. Fase 2 - Modelos baseline y estudios preliminares
 
-##  5. Fase 2 – Representación TF-IDF + Regresión Logística (fase2_tfidf.py)
+###  5.1 Representación TF-IDF + Regresión Logística
 
 En esta fase se utiliza TF-IDF (Term Frequency – Inverse Document Frequency) como primera estrategia de representación vectorial del texto. Este enfoque transforma cada noticia en un vector numérico de dimensión fija, donde cada componente refleja la importancia de un término en función de su frecuencia local y su capacidad discriminativa en el corpus completo.
 
 TF-IDF se emplea como baseline para comparar posteriormente su rendimiento frente a representaciones neuronales y embeddings contextuales.
 
-### 5.1 Configuración de la vectorización TF-IDF
+#### 5.1.1 Configuración de la vectorización TF-IDF
 
 La vectorización del texto se realiza con los siguientes parámetros:
 
@@ -119,7 +120,7 @@ La vectorización del texto se realiza con los siguientes parámetros:
 
 El vectorizador se ajusta exclusivamente sobre el conjunto de entrenamiento y posteriormente se aplica al conjunto de validación y test, evitando filtrado de información entre conjuntos (data leakage).
 
-### 5.2 Modelos evaluados con TF-IDF
+#### 5.1.2 Modelos evaluados con TF-IDF
 Sobre la representación TF-IDF se evalúan dos enfoques de clasificación distintos:
 
 ***A. Regresión Logística (Scikit-learn)***
@@ -155,7 +156,7 @@ Características principales del modelo:
 
 Este modelo permite analizar si una arquitectura no lineal es capaz de extraer patrones adicionales a partir de una representación TF-IDF clásica.
 
-### 5.3 Evaluación y métricas
+#### 5.1.3 Evaluación y métricas
 Ambos modelos se evalúan sobre el conjunto de test utilizando exactamente las mismas métricas:
 
 - **Accuracy**, como medida global de rendimiento.
@@ -170,7 +171,7 @@ Además, para cada modelo se generan y almacenan las siguientes visualizaciones:
 
 Los resultados obtenidos se almacenan para su comparación directa con las fases posteriores del proyecto, donde se emplean representaciones neuronales y modelos Transformer.
 
-#### 5.3.1 Resultados TF-IDF + Regresión Logística (Scikit-learn)
+##### 5.1.3.1 Resultados TF-IDF + Regresión Logística (Scikit-learn)
 <p align="center">
   <img src="images/conf_matrix_TFIDF_Sklearn.png" width="300" />
   <img src="images/roc_TFIDF_Sklearn.png" width="300" />
@@ -180,7 +181,7 @@ Los resultados obtenidos se almacenan para su comparación directa con las fases
 ![Curvas ROC](images/roc_TFIDF_Sklearn.png)-->
 
 
-#### 5.3.2.1 Resultados TF-IDF + Red neuronal (PyTorch)
+##### 5.1.3.2.1 Resultados TF-IDF + Red neuronal (PyTorch)
 <p align="center">
   <img src="images/conf_matrix_TFIDF_PyTorch.png" width="300" />
   <img src="images/roc_TFIDF_PyTorch.png" width="300" />
@@ -188,7 +189,7 @@ Los resultados obtenidos se almacenan para su comparación directa con las fases
 <!--![Matriz de confusión con TF-IDF PyTorch](images/conf_matrix_TFIDF_PyTorch.png)
 ![alt text](images/roc_TFIDF_PyTorch.png)-->
 
-#### 5.3.2.2 Resultados TF-IDF + Red neuronal (PyTorch) con Early Stopping
+##### 5.1.3.2.2 Resultados TF-IDF + Red neuronal (PyTorch) con Early Stopping
 <p align="center">
   <img src="images/conf_matrix_TFIDF_PyTorch_E_S.png" width="300" />
   <img src="images/roc_TFIDF_PyTorch_E_S.png" width="300" />
@@ -208,21 +209,21 @@ Durante el entrenamiento del modelo TF-IDF + PyTorch con un máximo de 200 époc
 
 Este comportamiento confirma la presencia de un incipiente sobreajuste a partir de las últimas épocas, donde el modelo sigue optimizando el conjunto de entrenamiento sin lograr mejoras equivalentes en validación.
 
-### 5.4 Conclusiones
+### 5.1.4 Conclusiones
 
 El uso de early stopping en la red neuronal basada en TF-IDF permite mejorar notablemente el equilibrio entre clases, aumentando la detección de contenido hiperpartidista y reduciendo el sobreajuste.
 Este ajuste se refleja en una ROC-AUC ≈ 0.85, comparable al modelo clásico, y en una matriz de confusión más balanceada.
 En conjunto, early stopping demuestra ser una técnica clave para estabilizar el entrenamiento en arquitecturas neuronales simples.
 
-## 6. Fase 3 – Word2Vec preentrenado (Google News) y clasificación
+### 5.2. Fase 3 – Word2Vec preentrenado (Google News) y clasificación
 
 En esta fase se utiliza una segunda estrategia de representación vectorial basada en Word2Vec, empleando embeddings preentrenados sobre Google News. El objetivo es pasar de una representación dispersa basada en frecuencias (TF-IDF) a una representación densa y semántica, donde palabras con significados similares tienden a ocupar posiciones cercanas en el espacio vectorial.
 
-### 6.1 Carga del modelo Word2Vec (Google News)
+### 5.2.1 Carga del modelo Word2Vec (Google News)
 
 Se carga el modelo word2vec-google-news-300, un modelo preentrenado de gran tamaño (≈ 1.6 GB) que proporciona vectores de 300 dimensiones para palabras del vocabulario. Al tratarse de un modelo preentrenado, no se ajustan los embeddings durante el proyecto: se reutilizan directamente como fuente de información semántica.
 
-### 6.2 Vectorización de documentos a partir de embeddings de palabras
+#### 5.2.2 Vectorización de documentos a partir de embeddings de palabras
 
 Como Word2Vec produce vectores por palabra, se requiere convertir cada noticia completa en un único vector de tamaño fijo. Para ello, se implementa una representación a nivel de documento basada en el promedio (mean pooling) de los embeddings de sus palabras:
 
@@ -238,7 +239,7 @@ El resultado es una matriz de características densa para cada partición:
 
 - X_train_w2v, X_val_w2v, X_test_w2v con forma (n_documentos, 300).
 
-### 6.3 Modelos evaluados con Word2Vec
+#### 5.2.3 Modelos evaluados con Word2Vec
 
 Para mantener la comparabilidad experimental con TF-IDF, se evalúan dos clasificadores diferentes sobre la misma representación Word2Vec.
 
@@ -262,7 +263,7 @@ Como alternativa no lineal, se entrena una red neuronal feed-forward en PyTorch 
 
 Este enfoque permite comprobar si, sobre una representación semántica densa como Word2Vec, un clasificador no lineal mejora el rendimiento frente al clasificador lineal.
 
-### 6.4 Visualización de la arquitectura (diagrama de red)
+#### 5.2.4 Visualización de la arquitectura (diagrama de red)
 
 Adicionalmente, se genera un diagrama de la arquitectura de la red neuronal utilizada con Word2Vec mediante torchviz y graphviz. Para ello se crea una instancia de la red con entrada de 300 dimensiones y se propaga un input ficticio (dummy input).
 
@@ -272,7 +273,7 @@ El diagrama generado muestra la arquitectura interna de la red neuronal utilizad
 
 Además de las capas y activaciones, el diagrama refleja cómo PyTorch organiza internamente los cálculos necesarios para el aprendizaje. Los bloques asociados a los pesos y sesgos de cada capa indican los parámetros entrenables del modelo, mientras que los nodos intermedios representan las operaciones matemáticas que permiten calcular los gradientes durante la retropropagación del error. Aunque el grafo puede parecer complejo, su función principal es documentar que el modelo sigue una estructura 300 → 128 → 64 → 1, coherente con la arquitectura definida, y que el entrenamiento se realiza correctamente mediante backpropagation.
 
-### 6.5 Evaluación, artefactos y almacenamiento de resultados
+#### 5.2.5 Evaluación, artefactos y almacenamiento de resultados
 
 Para ambas variantes (Scikit-learn y PyTorch) se generan automáticamente:
 
@@ -280,13 +281,13 @@ Para ambas variantes (Scikit-learn y PyTorch) se generan automáticamente:
 - Curva ROC
 
 Los resultados se almacenan en una estructura común para facilitar la comparación con TF-IDF y con las fases posteriores del proyecto.
-#### 6.5.1 Resultados Word2Vec + Regresión Logística (Scikit-learn)
+##### 5.2.5.1 Resultados Word2Vec + Regresión Logística (Scikit-learn)
 <p align="center">
   <img src="images/conf_matrix_W2V_Google_Sklearn.png" width="300" />
   <img src="images/roc_W2V_Google_Sklearn.png" width="300" />
 </p>
 
-#### 6.5.2 Resultados Word2Vec + Red neuronal (PyTorch)
+##### 5.2.5.2 Resultados Word2Vec + Red neuronal (PyTorch)
 <p align="center">
   <img src="images/conf_matrix_W2V_Google_PyTorch.png" width="300" />
   <img src="images/roc_W2V_Google_PyTorch.png" width="300" />
@@ -296,13 +297,13 @@ Los resultados se almacenan en una estructura común para facilitar la comparaci
   <img src="images/roc_W2V_Google_PyTorch_E_S.png" width="300" />
 </p>
 
-## 7. Fase 4 – Embeddings contextuales con BERT (DistilBERT)
+### 5.3. Fase 4 – Embeddings contextuales con BERT (DistilBERT)
 
 En esta fase se emplea una representación del texto basada en embeddings contextuales obtenidos mediante un modelo Transformer preentrenado. Concretamente, se utiliza DistilBERT, una versión más ligera de BERT que mantiene gran parte de su capacidad representacional con un menor coste computacional.
 
 El objetivo de esta fase es evaluar si una representación contextual, capaz de tener en cuenta el significado de las palabras en función de su contexto, mejora la detección de noticias hiperpartidistas frente a representaciones estáticas como TF-IDF o Word2Vec.
 
-### 7.1 Modelo utilizado: DistilBERT
+#### 5.3.1 Modelo utilizado: DistilBERT
 
 Se emplea el modelo distilbert-base-uncased, preentrenado sobre grandes corpus de texto en inglés mediante tareas de modelado del lenguaje. Sus principales características son:
 
@@ -314,7 +315,7 @@ Se emplea el modelo distilbert-base-uncased, preentrenado sobre grandes corpus d
 
 En esta fase, DistilBERT se utiliza exclusivamente como extractor de características, no como clasificador end-to-end.
 
-### 7.2 Extracción de embeddings a nivel de documento
+#### 5.3.2 Extracción de embeddings a nivel de documento
 
 Cada texto se procesa individualmente mediante el tokenizador de DistilBERT, que convierte el texto en tokens compatibles con el modelo. Para controlar el coste computacional y asegurar una longitud uniforme, se aplica:
 
@@ -328,7 +329,7 @@ El resultado es una matriz de embeddings densos para cada partición del dataset
 
 - X_train_bert, X_val_bert, X_test_bert con dimensión (n_documentos, 768).
 
-### 7.3 Modelos evaluados con embeddings BERT
+#### 5.3.3 Modelos evaluados con embeddings BERT
 
 Al igual que en las fases anteriores, se evalúan dos enfoques de clasificación sobre los embeddings extraídos con BERT, manteniendo la coherencia experimental.
 
@@ -358,7 +359,7 @@ Uso explícito del conjunto de validación para detener el entrenamiento y recup
 
 Este enfoque permite analizar si una arquitectura neuronal sencilla es capaz de explotar mejor la riqueza semántica de los embeddings contextuales.
 
-### 7.4 Evaluación y objetivo comparativo
+#### 5.3.4 Evaluación y objetivo comparativo
 
 Ambos modelos se evalúan sobre el conjunto de test utilizando las mismas métricas que en el resto del proyecto:
 
