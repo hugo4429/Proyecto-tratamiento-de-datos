@@ -27,6 +27,7 @@ El dataset empleado es Hyperpartisan News Detection, disponible en Hugging Face,
 
 ## 2. Estructura del repositorio
 
+```text
 main.py                           Fase 1: Preprocesado, limpieza y EDA
 fase2_tfidf.py                    Fase 2: TF-IDF + Regresión Logística
 fase3_pytorch.py                  Fase 3: Red neuronal con embeddings propios
@@ -36,6 +37,7 @@ grafico_longitud.png              Histograma de longitudes
 grafico_entrenamiento_pytorch.png
 requirements.txt                  Dependencias
 README.md                         Memoria del proyecto
+```
 
 ##   3. Instalación del entorno
 
