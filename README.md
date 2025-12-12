@@ -209,7 +209,7 @@ Durante el entrenamiento del modelo TF-IDF + PyTorch con un máximo de 200 époc
 
 Este comportamiento confirma la presencia de un incipiente sobreajuste a partir de las últimas épocas, donde el modelo sigue optimizando el conjunto de entrenamiento sin lograr mejoras equivalentes en validación.
 
-- Métricas de error
+- Métricas de error:
 
 | Época | Train Loss | Val Loss |
 |------:|-----------:|---------:|
@@ -306,7 +306,7 @@ Los resultados se almacenan en una estructura común para facilitar la comparaci
   <img src="images/conf_matrix_W2V_Google_PyTorch_E_S.png" width="300" />
   <img src="images/roc_W2V_Google_PyTorch_E_S.png" width="300" />
 </p>
-- Métricas de error
+- Métricas de error:
 
 | Época | Train Loss | Val Loss |
 |------:|-----------:|---------:|
@@ -389,7 +389,7 @@ Este enfoque permite analizar si una arquitectura neuronal sencilla es capaz de 
 
 Ambos modelos se evalúan sobre el conjunto de test utilizando las mismas métricas que en el resto del proyecto:
 
-- Métricas de error
+- Métricas de error:
 
 | Época | Train Loss | Val Loss |
 |------:|-----------:|---------:|
@@ -424,10 +424,16 @@ Además, se generan automáticamente:
 
 
 ##    8. Comparación final de modelos
-Representación	Modelo	Complejidad	Esperado
-TF-IDF	Regresión logística	Baja	Baseline
-Embeddings propios	PyTorch NN	Media	Mejor que TF-IDF
-BERT contextual	DistilBERT	Alta	Mejor rendimiento global
+
+| Modelo | Accuracy | AUC-ROC |
+|------|---------:|--------:|
+| TFIDF + Sklearn | 0.7423 | 0.8438 |
+| TFIDF + PyTorch | 0.8041 | 0.8506 |
+| W2V Google + Sklearn | 0.6907 | 0.7855 |
+| W2V Google + PyTorch | 0.7216 | 0.8320 |
+| BERT Embeddings + Sklearn | 0.7938 | 0.8848 |
+| *BERT Embeddings + PyTorch* | *0.8763* | *0.9158* |
+
 
 ##    9. Extensiones del proyecto (opcionales)
 Para añadir valor al proyecto, se proponen extensiones posibles:
