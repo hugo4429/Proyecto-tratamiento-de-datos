@@ -196,7 +196,7 @@ Los resultados obtenidos se almacenan para su comparación directa con las fases
 <!--![Matriz de confusión con TF-IDF Early-stop](images/conf_matrix_TFIDF_Google_PyTorch_E_S.png)
 ![Curvas ROC ](images/roc_TFIDF_Sklearn_E_S.png)-->
 
-Durante el entrenamiento del modelo TF-IDF + PyTorch con un máximo de 100 épocas, se observa la siguiente evolución:
+Durante el entrenamiento del modelo TF-IDF + PyTorch con un máximo de 200 épocas, se observa la siguiente evolución:
 
 - En las primeras épocas, tanto la pérdida de entrenamiento como la pérdida de validación disminuyen de forma progresiva, lo que indica que el modelo está aprendiendo patrones relevantes a partir de los datos.
 
@@ -208,6 +208,11 @@ Durante el entrenamiento del modelo TF-IDF + PyTorch con un máximo de 100 époc
 
 Este comportamiento confirma la presencia de un incipiente sobreajuste a partir de las últimas épocas, donde el modelo sigue optimizando el conjunto de entrenamiento sin lograr mejoras equivalentes en validación.
 
+### 5.4 Conclusiones
+
+El uso de early stopping en la red neuronal basada en TF-IDF permite mejorar notablemente el equilibrio entre clases, aumentando la detección de contenido hiperpartidista y reduciendo el sobreajuste.
+Este ajuste se refleja en una ROC-AUC ≈ 0.85, comparable al modelo clásico, y en una matriz de confusión más balanceada.
+En conjunto, early stopping demuestra ser una técnica clave para estabilizar el entrenamiento en arquitecturas neuronales simples.
 
 ## 6. Fase 3 – Word2Vec preentrenado (Google News) y clasificación
 
