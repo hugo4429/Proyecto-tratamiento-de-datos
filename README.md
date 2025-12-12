@@ -127,9 +127,9 @@ Sobre la representación TF-IDF se evalúan dos enfoques de clasificación disti
 
 Se utiliza un modelo de Regresión Logística como clasificador lineal de referencia, con la siguiente configuración:
 
-- Número máximo de iteraciones: 1000
-- Ajuste de pesos de clase: balanceado
-- Semilla aleatoria: 42
+- max_iter = 1000
+- class_weight = "balanced" (para compensar posibles desbalances de clase)
+- random_state = 42 (reproducibilidad)
 
 El modelo produce probabilidades asociadas a la clase positiva (hiperpartidista), lo que permite una evaluación más rica que una predicción binaria directa.
 
@@ -235,9 +235,6 @@ Como Word2Vec produce vectores por palabra, se requiere convertir cada noticia c
 
 Caso especial implementado: si un documento no contiene ninguna palabra presente en el modelo, se asigna un vector de ceros de dimensión 300. Esto garantiza que todos los documentos tienen representación válida y comparable.
 
-El resultado es una matriz de características densa para cada partición:
-
-- X_train_w2v, X_val_w2v, X_test_w2v con forma (n_documentos, 300).
 
 #### 5.2.3 Modelos evaluados con Word2Vec
 
@@ -267,7 +264,7 @@ Este enfoque permite comprobar si, sobre una representación semántica densa co
 
 Adicionalmente, se genera un diagrama de la arquitectura de la red neuronal utilizada con Word2Vec mediante torchviz y graphviz. Para ello se crea una instancia de la red con entrada de 300 dimensiones y se propaga un input ficticio (dummy input).
 
-![alt text](images/diagrama_arquitectura_w2v.png)
+![alt text](images/diagrama_w2v_simple.png)
 
 El diagrama generado muestra la arquitectura interna de la red neuronal utilizada con Word2Vec, así como el flujo de operaciones que PyTorch emplea durante el entrenamiento. La red recibe como entrada un vector de 300 dimensiones, correspondiente al embedding Word2Vec de cada documento, y lo procesa a través de dos capas ocultas. La primera capa transforma la entrada de 300 a 128 neuronas, y la segunda reduce la representación de 128 a 64 neuronas, aplicando en ambos casos una función de activación ReLU para introducir no linealidad. Finalmente, una capa de salida de 1 neurona con activación sigmoide produce un único valor entre 0 y 1, que se interpreta como la probabilidad de que la noticia sea hiperpartidista.
 
@@ -371,7 +368,22 @@ Además, se generan automáticamente:
 - Matrices de confusión
 - Curvas ROC
 
-Los resultados obtenidos en esta fase permiten comparar de forma directa TF-IDF, Word2Vec y BERT embeddings, analizando el impacto de pasar de representaciones basadas en frecuencias, a embeddings estáticos, y finalmente a embeddings contextuales, manteniendo constante el esquema de evaluación y los clasificadores empleados.
+##### 5.3.4.1 Resultados Word2Vec + Regresión Logística (Scikit-learn)
+<p align="center">
+  <img src="images/conf_matrix_BERT_Emb_Sklearn.png" width="300" />
+  <img src="images/roc_BERT_Emb_Sklearn.png" width="300" />
+</p>
+
+##### 5.3.4.1 Resultados Word2Vec + Red neuronal (PyTorch)
+<p align="center">
+  <img src="images/conf_matrix_BERT_Emb_PyTorch.png" width="300" />
+  <img src="images/roc_BERT_Emb_PyTorch.png" width="300" />
+</p>
+<p align="center">
+  <img src="images/conf_matrix_BERT_Emb_PyTorch_E_S.png" width="300" />
+  <img src="images/roc_BERT_Emb_PyTorch_E_S.png" width="300" />
+</p>
+
 
 ##    8. Comparación final de modelos
 Representación	Modelo	Complejidad	Esperado
